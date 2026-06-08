@@ -161,7 +161,7 @@ Smart Resume Builder helps users create professional resumes quickly without nee
 
 Sahish Joshi
 
-GitHub: https://github.com/yourusername
+GitHub: https://github.com/Sahish-joshi18
 
 ## License
 
