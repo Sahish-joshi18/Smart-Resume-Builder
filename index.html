@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Resume Builder</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- html2pdf.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Professional Resume Tool</p>
+        <h1>Smart Resume Builder</h1>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" id="saveBtn">Save</button>
+        <button class="btn danger" id="clearBtn">Clear</button>
+        <button class="btn primary" id="downloadBtn">Download PDF</button>
+      </div>
+    </header>
+
+    <main class="builder-layout">
+      <!-- Sidebar Form -->
+      <section class="form-panel">
+        <div class="panel-card sticky-card">
+          <div class="section-title">
+            <span>Template</span>
+            <small>Choose resume style</small>
+          </div>
+          <div class="template-switcher">
+            <button class="template-btn active" data-template="modern">Modern</button>
+            <button class="template-btn" data-template="minimal">Minimal</button>
+            <button class="template-btn" data-template="professional">Professional</button>
+            <button class="template-btn" data-template="executive">Executive</button>
+            <button class="template-btn" data-template="creative">Creative</button>
+            <button class="template-btn" data-template="tech">Tech</button>
+            <button class="template-btn" data-template="elegant">Elegant</button>
+            <button class="template-btn" data-template="classic">Classic</button>
+            <button class="template-btn" data-template="sidebar">Sidebar</button>
+            <button class="template-btn" data-template="compact">Compact</button>
+          </div>
+        </div>
+
+        <form id="resumeForm">
+          <!-- Personal Details -->
+          <div class="panel-card">
+            <div class="section-title">
+              <span>Personal Details</span>
+              <small>Your basic profile</small>
+            </div>
+            <div class="photo-upload-box">
+              <div class="photo-preview" id="photoPreview">SJ</div>
+              <div>
+                <label class="photo-label" for="photoInput">Upload Profile Photo</label>
+                <input type="file" id="photoInput" accept="image/*" hidden>
+                <button type="button" class="remove-photo-btn" id="removePhotoBtn">Remove Photo</button>
+                <p class="photo-hint">Square photo works best for resume preview and PDF.</p>
+              </div>
+            </div>
+            <div class="grid two">
+              <label>Full Name<input type="text" id="fullName" placeholder="Your name"></label>
+              <label>Job Title<input type="text" id="jobTitle" placeholder="Frontend Developer"></label>
+              <label>Email<input type="email" id="email" placeholder="you@example.com"></label>
+              <label>Phone<input type="text" id="phone" placeholder="+91 98765 43210"></label>
+              <label>Location<input type="text" id="location" placeholder="Mumbai, India"></label>
+              <label>LinkedIn<input type="url" id="linkedin" placeholder="https://linkedin.com/in/..."></label>
+              <label>GitHub<input type="url" id="github" placeholder="https://github.com/..."></label>
+              <label>Portfolio<input type="url" id="portfolio" placeholder="https://yourportfolio.com"></label>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="panel-card">
+            <div class="section-title">
+              <span>Summary</span>
+              <small>Short professional intro</small>
+            </div>
+            <label>Professional Summary
+              <textarea id="summary" rows="5" placeholder="Write a clear 3-4 line professional summary..."></textarea>
+            </label>
+          </div>
+
+          <!-- Education -->
+          <div class="panel-card">
+            <div class="section-title row-between">
+              <div><span>Education</span><small>Add your academic details</small></div>
+              <button type="button" class="mini-btn" id="addEducation">+ Add</button>
+            </div>
+            <div id="educationList" class="dynamic-list"></div>
+          </div>
+
+          <!-- Experience -->
+          <div class="panel-card">
+            <div class="section-title row-between">
+              <div><span>Experience</span><small>Work or internship details</small></div>
+              <button type="button" class="mini-btn" id="addExperience">+ Add</button>
+            </div>
+            <div id="experienceList" class="dynamic-list"></div>
+          </div>
+
+          <!-- Skills -->
+          <div class="panel-card">
+            <div class="section-title">
+              <span>Skills</span>
+              <small>Add skills as tags</small>
+            </div>
+            <div class="skill-input-wrap">
+              <input type="text" id="skillInput" placeholder="Type skill and press Add">
+              <button type="button" class="mini-btn" id="addSkill">Add</button>
+            </div>
+            <div id="skillsTags" class="skills-tags"></div>
+          </div>
+
+          <!-- Projects -->
+          <div class="panel-card">
+            <div class="section-title row-between">
+              <div><span>Projects</span><small>Showcase best work</small></div>
+              <button type="button" class="mini-btn" id="addProject">+ Add</button>
+            </div>
+            <div id="projectsList" class="dynamic-list"></div>
+          </div>
+
+          <!-- Certifications -->
+          <div class="panel-card">
+            <div class="section-title row-between">
+              <div><span>Certifications</span><small>Courses and awards</small></div>
+              <button type="button" class="mini-btn" id="addCertificate">+ Add</button>
+            </div>
+            <div id="certificationsList" class="dynamic-list"></div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Resume Preview -->
+      <section class="preview-panel">
+        <div class="preview-toolbar">
+          <div>
+            <strong>Live Preview</strong>
+            <p>ATS-friendly A4 resume</p>
+          </div>
+          <span class="status-pill" id="saveStatus">Auto saved</span>
+        </div>
+
+        <div class="resume-scale-wrap">
+          <article class="resume-page template-modern" id="resumePreview">
+            <!-- Filled by JavaScript -->
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
