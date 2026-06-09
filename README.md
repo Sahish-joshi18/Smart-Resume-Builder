@@ -125,7 +125,7 @@ Smart-Resume-Builder/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Smart-Resume-Builder.git
+git clone https://github.com/Sahish-joshi18/Smart-Resume-Builder.git
 ```
 
 ### Open Project
